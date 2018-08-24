@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux-immutable';
-import { reducer as todoListReducer } from '../pages/login/store/';
+import { reducer as loginReducer } from '../pages/login/store/';
 
 
 export default  combineReducers({
-	todoList:todoListReducer
+	loginState:loginReducer
 });

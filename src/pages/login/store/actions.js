@@ -1,40 +1,45 @@
-import * as todoList from './actionType.js';
-import axios from 'axios';
+import * as Login from './actionType.js';
+import { message } from 'antd';
+import { LOGIN } from 'api';
+import { request,setUsername } from 'util';
 
-export const changeAction = (payload)=>{
+export const loginRequest = ()=>{
 	return {
-			type:todoList.CHANGE,
-			payload
+			type:Login.LOGIN_REQUEST,
 		};
 };
-export const addAction = ()=>{
+export const loginError = ()=>{
 	return {
-			type:todoList.ADD
+			type:Login.LOGIN_ERROR
 		};
 };
-export const deleteAction = (payload)=>{
-	return {
-			type:todoList.DELETE,
-			payload
-		};
-};
-export const loadateAction = (payload)=>{
-	return {
-			type:todoList.LOADATE,
-			payload
-		};
-};
-export const getInitData = ()=>{
+
+
+export const getLoginData = (values)=>{
 	return (dispatch)=>{
-		axios
-		.get('http://127.0.0.1:3000')
-		.then((data)=>{
-			const action = loadateAction(data.data);
-			dispatch(action);
-		})
-		.catch((e)=>{
-			console.log('err:::',e);
-		});
+		const action = loginRequest();
+        dispatch(action);
+		request({
+          method: 'post',
+          url: LOGIN,
+          data: values
+        })
+        .then((result)=>{
+        	 const action = loginError();
+         dispatch(action);
+          if (result.code == 0) {
+            setUsername(result.data.username);
+            window.location.href = '/';
+          }else if (result.code == 10) {
+            message.error(result.message);
+            
+          }
+        })
+        .catch((err)=>{
+          console.log(err);
+           const action = loginError();
+         dispatch(action);
+        });
 	};
 	
 };

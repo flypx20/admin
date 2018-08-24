@@ -1,4 +1,2 @@
-export const CHANGE = 'todoList\change';
-export const ADD = 'todoList\add';
-export const DELETE = 'todoList\delete';
-export const LOADATE = 'todoList\loadate';
+export const LOGIN_REQUEST = 'login_request';
+export const LOGIN_ERROR = 'login_error';

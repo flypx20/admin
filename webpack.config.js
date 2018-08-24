@@ -19,6 +19,12 @@ module.exports = {
     publicPath:publicPath,
 
 	},
+  resolve: {
+    alias: {
+      util: path.resolve(__dirname, './src/util/'),
+      api: path.resolve(__dirname, './src/api/')
+    }
+  },
 	//配置loader
   module: {
     rules: [
