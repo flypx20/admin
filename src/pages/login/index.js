@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Form, Icon, Input, Button,message } from 'antd';
 import * as actionCreator from './store/actions.js';
 const FormItem = Form.Item;
+import './index.css';
 
 
 
@@ -28,6 +29,7 @@ class Login extends Component{
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
+      <div className='login'>
       <Form className="login-form">
         <FormItem>
           {getFieldDecorator('username', {
@@ -54,6 +56,7 @@ class Login extends Component{
           </Button>
         </FormItem>
       </Form>
+      </div>
     );
   }
 }

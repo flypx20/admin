@@ -4,12 +4,18 @@ export const request = (options)=>{
 	return new Promise((resolve,reject)=>{
 		axios({
 			method: options.method || 'get',
-      url: options.url || '',
-      data: options.data || null
+      		url: options.url || '',
+      		data: options.data || null,
+      		 withCredentials: true,
 		})
 		.then(result=>{
 			let data = result.data;
-			resolve(data);
+			if (data.code == 0) {
+				resolve(data);
+			}else if (data.code == 10) {
+				removeUsername();
+				window.location.href = '/login';
+			}
 		})
 		.catch(err=>{
 			reject(err);

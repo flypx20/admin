@@ -1,6 +1,8 @@
 import React,{ Component } from 'react';
 import Login from './pages/login/';
 import Home from './pages/home/';
+import User from './pages/user/';
+import ErrorPage from 'common/404-page/';
 
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 
@@ -35,11 +37,16 @@ class App extends Component{
 				}
 			}
 		//return 只能返回一个
-		return(<div className = 'login'>
+		return(<div>
 				<Router>
 				    <div>
+				    <Switch>
 				    	<ProtectedRoute exact path = '/' component={ Home }/>
+
+				    	<ProtectedRoute path = '/user' component={ User }/>
 				      <LoginRoute path="/login" component={ Login }/>
+				      <Route component={ ErrorPage }/>
+				    </Switch>  
 				    </div>
 				</Router>
 				
