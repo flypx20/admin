@@ -1,60 +1,101 @@
 import React,{ Component } from 'react';
 import  MyLayout  from 'common/layout/';
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Tag, Spin } from 'antd';
+import { connect } from 'react-redux';
+import * as actionCreator from './store/actions.js';
 
 const { Column, ColumnGroup } = Table;
+
+const columns = [{
+      title: '姓名',
+      dataIndex: 'userName',
+      key: 'userName'
+    }, {
+      title: '管理员身份',
+      dataIndex: 'isAdmin',
+      key: 'isAdmin',
+      render:(isAdmin)=>{
+        if (true) {
+          return '否';
+        }else{
+          return '是';
+        }
+      }
+    }, {
+      title: '邮箱',
+      dataIndex: 'email',
+      key: 'email'
+    },
+    {
+      title: '电话',
+      dataIndex: 'phone',
+      key: 'phone'
+    }];
+
 class User extends Component{
+  componentDidMount(){
+    this.props.handleUserList(1);
+  }
 	render(){
-		const data = [{
-  key: '1',
-  firstName: 'John',
-  lastName: 'Brown',
-  age: 32,
-  address: 'New York No. 1 Lake Park',
-  tags: ['nice', 'developer'],
-}, {
-  key: '2',
-  firstName: 'Jim',
-  lastName: 'Green',
-  age: 42,
-  address: 'London No. 1 Lake Park',
-  tags: ['loser'],
-}, {
-  key: '3',
-  firstName: 'Joe',
-  lastName: 'Black',
-  age: 32,
-  address: 'Sidney No. 1 Lake Park',
-  tags: ['cool', 'teacher'],
-}];
+		const data = this.props.list.map((user)=>{
+      return {
+        key:user.get('_id'),
+        userName:user.get('username'),
+        isAdmin:user.get('isAdmin'),
+        email:user.get('email'),
+        phone:user.get('phone')
+      };
+    }).toJS();
+    console.log(data);
+    // const data = [];
+    
 		//return 只能返回一个
 		return(
-			<MyLayout>
-				  <Table dataSource={data}>
-      <Column
-      	title="name"
-        dataIndex="firstName"
-        key="firstName"
-      />
-    <Column
-      title="Age"
-      dataIndex="age"
-      key="age"
-    />
-    <Column
-      title="Action"
-      key="action"
-      render={(text, record) => (
-        <span>
-          <a href="javascript:;">Invite {record.lastName}</a>
-          <Divider type="vertical" />
-          <a href="javascript:;">Delete</a>
-        </span>
-      )}
-    />
-  </Table>
-			</MyLayout>
-		)
-	}
+      <MyLayout>
+			<Table
+       columns={columns} 
+       dataSource={data}
+       pagination={
+        {
+          position:'bottom',
+          current:this.props.current,
+          defaultCurrent:this.props.current,
+          pageSize:this.props.pageSize,
+          total:this.props.total,
+         
+        }
+
+       }
+        onChange={(pagination)=>{
+          this.props.handleUserList(pagination.current);
+        }}
+        loading={
+            {
+            spinning:this.props.isFetching,
+            tip:'正在请求数据' 
+          }
+        }
+        />
+    </MyLayout>
+    )
+  }
 }
-export default User;
+
+const mapUserStateToProps = (state)=>{
+  return {
+    isFetching:state.get('userState').get('isFetching'),
+    pageSize:state.get('userState').get('pageSize'),
+    total:state.get('userState').get('total'),
+    current:state.get('userState').get('current'),
+    list:state.get('userState').get('list')
+  }
+}
+const mapUserActionsToProps = (dispatch)=>{
+    return {
+      handleUserList:(page)=>{
+        const action = actionCreator.getUserData(page);
+        dispatch(action);
+      }
+  }
+}
+export default connect(mapUserStateToProps,mapUserActionsToProps)(User);

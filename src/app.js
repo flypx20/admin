@@ -3,6 +3,7 @@ import Login from './pages/login/';
 import Home from './pages/home/';
 import User from './pages/user/';
 import ErrorPage from 'common/404-page/';
+import Category from './pages/category/';
 
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 
@@ -42,7 +43,7 @@ class App extends Component{
 				    <div>
 				    <Switch>
 				    	<ProtectedRoute exact path = '/' component={ Home }/>
-
+						<ProtectedRoute  path = '/category' component={ Category }/>
 				    	<ProtectedRoute path = '/user' component={ User }/>
 				      <LoginRoute path="/login" component={ Login }/>
 				      <Route component={ ErrorPage }/>
