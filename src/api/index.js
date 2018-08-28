@@ -4,3 +4,4 @@ export const LOGIN = server+'/admin/login';
 export const LOGOUT = server+'/admin/logout';
 export const ADMIN = server+'/admin/count';
 export const USER = server+'/admin/users';
+export const CATEGORY_ADD = server+'/category';

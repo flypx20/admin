@@ -10,8 +10,9 @@ class Category extends Component{
 		//return 只能返回一个
 		return(
 			  <Switch>
-          <Route exact path='/category' component={ CategoryList }/>
+        
           <Route path='/category/add' component={ CategoryAdd }/>
+            <Route path='/category/:pid?' component={ CategoryList }/>
         </Switch>  
     )
   }

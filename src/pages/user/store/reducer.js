@@ -24,7 +24,6 @@ export default (state=defaultItem,action)=>{
     		current:action.payload.current,
    			list:fromJS(action.payload.list)
 		});
-		return state.set('isFetching',false);
 	}
 	return state;
 };

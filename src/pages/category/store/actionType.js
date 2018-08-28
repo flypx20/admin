@@ -1,3 +1,4 @@
-export const USER_REQUEST = 'User_request';
-export const USER_DONE = 'User_done';
-export const USER_STATE = 'User_state';
+export const CATEGORY_REQUEST = 'Category_request';
+export const CATEGORY_DONE = 'Category_done';
+export const CATEGORY_STATE = 'Category_state';
+export const CATEGORYLIST_STATE = 'CategoryList_state';

@@ -14,13 +14,8 @@ const columns = [{
       title: '管理员身份',
       dataIndex: 'isAdmin',
       key: 'isAdmin',
-      render:(isAdmin)=>{
-        if (true) {
-          return '否';
-        }else{
-          return '是';
-        }
-      }
+      render:isAdmin=>( isAdmin ? '是' : '否')
+        
     }, {
       title: '邮箱',
       dataIndex: 'email',
