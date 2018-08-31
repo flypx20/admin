@@ -2,55 +2,18 @@ import React,{ Component } from 'react';
 import  MyLayout  from 'common/layout/';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Breadcrumb,Button,Table,Divider,Input,InputNumber  } from 'antd';
+import { Breadcrumb,Button,Table,Divider,Input,InputNumber,Modal  } from 'antd';
 import * as actionCreator from './store/actions.js';
 
 const { Column, ColumnGroup } = Table;
 
-const columns = [{
-      title: '分类名称',
-      dataIndex: 'name',
-      key: 'name'
-    }, {
-      title: '分类id',
-      dataIndex: 'id',
-      key: 'id',
-    }, {
-      title: 'order',
-      dataIndex: 'order',
-      key:'order',
-      render: (order, record) => {
-	    return <InputNumber defaultValue={order} />
-	  },
-     
-    },
-    {
-	  title: '操作',
-	  key: 'action',
-	  render: (text, record) => (
-	    <span>
-			<a href="javascript:;">更新分类</a>
-			{
-				record.pid == 0
-				?(
-					<span>
-						 <Divider type="vertical" />
-						 <Link to={"/category/"+record.id} >查看子分类</Link>						
-					</span>
-					)
-				:null
 
-			}
-
-	    </span>
-	 ),
-}];
 class CategoryList extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
 			pid:this.props.match.params.pid || 0
-		}
+		};
 	}
 	componentDidMount(){
 		this.props.handleCategoryList(this.state.pid,1);
@@ -66,7 +29,66 @@ class CategoryList extends Component{
 			});
 		}
 	}
+	handleChange(e){
+		console.log(e.target.value);
+	}
 	render(){
+		const columns = [{
+      title: '分类名称',
+      dataIndex: 'name',
+      key: 'name'
+    }, {
+      title: '分类id',
+      dataIndex: 'id',
+      key: 'id',
+    }, {
+      title: 'order',
+      dataIndex: 'order',
+      key:'order',
+      render: (order,record 
+      	) => {
+	    return <InputNumber
+	     defaultValue={order}
+	     onBlur = {
+	     	(e)=>{
+	     		this.props.handleOrder(record.pid,record.id,e.target.value);
+	     	}
+	     }
+	    />
+	  },
+     
+    },
+    {
+	  title: '操作',
+	  key: 'action',
+	  render: (text, record) => (
+	    <span>
+			
+				<a 
+					href="javascript:;"
+					onClick = {()=>{
+						this.props.handleCategoryNmae(record.id,record.name);
+					}}
+				>
+					更改名称
+				</a>
+
+  
+			{
+				record.pid == 0
+				?(
+					<span>
+						 <Divider type="vertical" />
+						 <Link to={"/category/"+record.id} >查看子分类</Link>						
+					</span>
+					)
+				:null
+
+			}
+
+	    </span>
+	 ),
+}];
 		const data = this.props.list.map((cates)=>{
 			return {
 				key:cates.get('_id'),
@@ -98,7 +120,7 @@ class CategoryList extends Component{
           current:this.props.current,
           defaultCurrent:this.props.current,
           pageSize:this.props.pageSize,
-          total:this.props.total,
+          total:this.props.total
          
         }
 
@@ -113,6 +135,28 @@ class CategoryList extends Component{
           }
         }
         />
+        <Modal
+		  title="请填写新的分类名称"
+		  visible={this.props.isVisible}
+		  mask={false}
+		  onCancel={this.props.handleCancel}
+		  onOk = {()=>{
+		  		this.props.setName(this.state.pid,this.props.current);
+		  	}}
+		  	confirmLoading={this.props.isComfirmLoading}
+			>
+		 <Input
+		  value = {
+		  	this.props.categoryName
+		  }
+		  onChange = {
+		  	(e)=>{
+		  		this.props.handleChange(e);
+		  	}
+		  }
+		  />
+
+		</Modal>
     </MyLayout>
     )
   }
@@ -123,7 +167,11 @@ const mapCateGoryListStateToProps = (state)=>{
     pageSize:state.get('categoryState').get('pageSize'),
     total:state.get('categoryState').get('total'),
     current:state.get('categoryState').get('current'),
-    list:state.get('categoryState').get('categories')
+    list:state.get('categoryState').get('categories'),
+    isVisible:state.get('categoryState').get('isVisible'),
+    categoryName:state.get('categoryState').get('categoryName'),
+    categoryId:state.get('categoryState').get('categoryId'),
+    isComfirmLoading:state.get('categoryState').get('isComfirmLoading')
   }
 }
 const mapCategoryListActionsToProps = (dispatch)=>{
@@ -131,6 +179,32 @@ const mapCategoryListActionsToProps = (dispatch)=>{
       handleCategoryList:(pid,page)=>{
         const action = actionCreator.getCategoryListData(pid,page);
         dispatch(action);
+      },
+      handleCategoryNmae:(id,name)=>{
+        const action = actionCreator.getCategoryName(id,name);
+        dispatch(action);
+      },
+      handleCancel:()=>{
+    
+      		const action = actionCreator.cancelCategoryModal();
+        	dispatch(action);
+      
+      },
+      handleOk:(pid,name)=>{
+      		const action = actionCreator.setCategoryName(pid,name);
+        	dispatch(action);
+      },
+      handleChange:(e)=>{
+      	const action = actionCreator.ChangeCategoryName(e.target.value);
+        dispatch(action);
+      },
+      setName:(pid,page)=>{
+      	const action = actionCreator.setCatesName(pid,page);
+        dispatch(action);      	
+      },
+      handleOrder:(pid,id,val)=>{
+      	const action = actionCreator.setOrder(pid,id,val);
+        dispatch(action);      	
       }
   }
 }

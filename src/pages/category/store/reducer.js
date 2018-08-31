@@ -7,7 +7,11 @@ const defaultItem = fromJS({
 	categories:[],
 	pageSize:5,
 	total:50,
-	current:1
+	current:1,
+	isVisible:false,
+	categoryName:'',
+	categoryId:'',
+	isComfirmLoading:false
 });
 export default (state=defaultItem,action)=>{
 	if (action.type == types.CATEGORY_REQUEST) {
@@ -27,6 +31,29 @@ export default (state=defaultItem,action)=>{
 			current:action.payload.current,
 			categories:fromJS(action.payload.list)
 		});
+	}
+	if (action.type == types.CATEGORY_NAME) {
+		return state.merge({
+			isVisible:true,
+			categoryName:action.payload.name,
+			categoryId:action.payload.id
+		});
+	}
+	if (action.type == types.CATEGORY_CANCEL) {
+		return state.merge({
+			isVisible:false
+		});
+	}
+	if (action.type == types.CATEGORY_CHANGE) {
+		return state.merge({
+			categoryName:action.payload
+		});
+	}
+	if (action.type == types.CATEGORY_EDIT_REQUEST) {
+		return state.set('isComfirmLoading',true);
+	}
+	if (action.type == types.CATEGORY_EDIT_DONE) {
+		return state.set('isComfirmLoading',false);
 	}
 	return state;
 };

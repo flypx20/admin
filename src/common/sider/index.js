@@ -16,7 +16,6 @@ class mySider extends Component{
       <Sider width={200} style={{ background: '#fff' }}>
         <Menu
           mode="inline"
-          defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
           style={{ height: '100%', borderRight: 0 }}
         >
@@ -27,7 +26,7 @@ class mySider extends Component{
               <NavLink to='/user'><Icon type="user" />用户列表</NavLink>
             </Menu.Item>
             <Menu.Item key="3">
-              <NavLink to='/goods'><Icon type="book" />商品管理</NavLink>
+              <NavLink to='/product'><Icon type="book" />商品管理</NavLink>
             </Menu.Item>
             <Menu.Item key="4">
               <NavLink to='/category'><Icon type="bars" />分类管理</NavLink>
