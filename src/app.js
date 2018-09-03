@@ -32,16 +32,15 @@ class App extends Component{
 			const LoginRoute = ({component:Component,...rest})=>{
 				if (getUsername()) {
 					return <Redirect to={{
-								pathname:'/'
-							}} />
+						pathname:'/'
+					}} />
 				}else{
 					return <Route {...rest} component={Component}/>
 				}
 			}
 		//return 只能返回一个
-		return(<div>
-				<Router>
-				    <div>
+		return(
+				<Router forceRefresh = {true}>
 				    <Switch>
 				    	<ProtectedRoute exact path = '/' component={ Home }/>
 						<ProtectedRoute  path = '/category' component={ Category }/>
@@ -50,10 +49,8 @@ class App extends Component{
 				      <LoginRoute path="/login" component={ Login }/>
 				      <Route component={ ErrorPage }/>
 				    </Switch>  
-				    </div>
 				</Router>
-				
-				</div>)
+				)
 	}
 }
 export default App;

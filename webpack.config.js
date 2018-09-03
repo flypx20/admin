@@ -63,7 +63,15 @@ module.exports = {
                 ]                
             }
         }               
-      }              
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        query: {
+            limit: 8000,
+             name: 'font/[name].[hash:7].[ext]'
+        } 
+      }             
     ]
   },
   plugins: [

@@ -9,6 +9,9 @@ import './index.css';
 class RichEditor extends Component {
 	constructor(props){
 		super(props);
+    this.state={
+      isLoaded: false
+    }
 		$.ajaxSetup({
 			xhrFields:{
 				withCredentials:true
@@ -18,12 +21,24 @@ class RichEditor extends Component {
 	}
   
   componentDidMount(){
+
   	this.loadEditor();
   	this.editor.on('valuechanged',()=>{
+      this.setState({
+        isLoaded:true
+      });
   		this.props.getEditorValue(this.editor.getValue());
   	});
   }
-  
+
+  componentDidUpdate(){
+    if (this.props.detail && !this.state.isLoaded ) {
+      this.editor.setValue(this.props.detail);
+      this.setState({
+        isLoaded:true
+      });
+    }
+  }
   
   
   
@@ -56,8 +71,6 @@ class RichEditor extends Component {
  }
 	
   render() {
-  	
-    
     return (
       <div >
         <textarea

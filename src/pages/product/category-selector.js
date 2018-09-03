@@ -7,18 +7,56 @@ const Option = Select.Option;
 
 class CategorySelector extends Component{
   constructor(props){
+
     super(props);
     this.state = {
       levelOneCategoryName:[],
-      levelOneCategoryid:'',
+      levelOneCategoryId:'',
       levelTwoCategoryName:[],
-      levelTwoCategoryId:''
+      levelTwoCategoryId:'',
+      needlevelTwoCategoryId:false,
+      isChanged:false
+
     };
     this.handlelevelOneChange = this.handlelevelOneChange.bind(this);
     this.handlelevelTwoChange = this.handlelevelTwoChange.bind(this);
   }
   componentDidMount(){
     this.levelOneCategorySate();
+  }
+  static getDerivedStateFromProps(props, state){
+    const levelOneCategoryidChange = props.ParentCategoryId !== state.levelOneCategoryId;
+    const levelTwoCategoryidChange = props.categoryId !== state.levelTwoCategoryId;
+    if (state.levelOneCategoryId && !props.ParentCategoryId && !props.categoryId) {
+      return null;
+    }
+    if (!levelOneCategoryidChange && !levelTwoCategoryidChange) {
+      return null;
+    }
+    if (state.isChanged) {
+      return null;
+    }
+    if (props.ParentCategoryId == 0) {
+      return {
+        levelOneCategoryId:props.categoryId,
+        levelTwoCategoryId:'',
+        isChanged:true
+      };
+    }else{
+      return {
+        levelOneCategoryId:props.ParentCategoryId,
+        levelTwoCategoryId:props.categoryId,
+        needlevelTwoCategoryId:true,
+        isChanged:true
+      };
+    }
+    return null;
+  }
+  componentDidUpdate(){
+    if (this.state.needlevelTwoCategoryId) {
+      this.levelTwoCategorySate();
+      this.setState({needlevelTwoCategoryId:false});
+    }
   }
   levelOneCategorySate(){
     request({
@@ -40,17 +78,17 @@ class CategorySelector extends Component{
   handlelevelOneChange(val){
     // console.log(val);
     this.setState({
-      levelOneCategoryid:val
+      levelOneCategoryId:val
     },()=>{
       this.levelTwoCategorySate();
-      this.onValueChange(this.state.levelOneCategoryid);
+      this.onValueChange(this.state.levelOneCategoryId);
     });
   }
   levelTwoCategorySate(){
     request({
       url:CATEGORY_ADD,
       data:{
-        pid:this.state.levelOneCategoryid
+        pid:this.state.levelOneCategoryId
       }
     })
     .then((result)=>{
@@ -64,9 +102,9 @@ class CategorySelector extends Component{
   }
   handlelevelTwoChange(val){
     this.setState({
-      levelTwoCategoryid:val
+      levelTwoCategoryId:val
       },()=>{
-        this.onValueChange(this.state.levelOneCategoryid,this.state.levelTwoCategoryid);
+        this.onValueChange(this.state.levelOneCategoryId,this.state.levelTwoCategoryId);
       });
     }
   onValueChange(pid,id){
@@ -77,7 +115,7 @@ class CategorySelector extends Component{
     }
   }
   render(){
-    const { levelOneCategoryName,levelOneCategoryid,levelTwoCategoryName,levelTwoCategoryId }  = this.state;
+    const { levelOneCategoryName,levelOneCategoryId,levelTwoCategoryName,levelTwoCategoryId }  = this.state;
     const levelOneCategory = levelOneCategoryName.map((cates)=>{
       return (<Option key={cates._id} value={cates._id}>{cates.name}</Option>)
     });
@@ -86,27 +124,33 @@ class CategorySelector extends Component{
     });
     return (
       
-        <div>
-          <Select
-           style={{ width: 120 }}
-           onChange={(value)=>{this.handlelevelOneChange(value)}}
-          >
-            {levelOneCategory}
-          </Select>
-          {
-            levelTwoCategoryName.length > 0
-            ? (
-                <Select
-                 style={{ width: 120 }}
-                 onChange={(value)=>{this.handlelevelTwoChange(value)}}
-                >
-                 {levelTwoCategory}
-                </Select>
-              )
-            : null
-          }
+      <div>
+        <Select
+          defaultValue = {levelOneCategoryId}
+          value={levelOneCategoryId}
+         style={{ width: 120 }}
+         onChange={(value)=>{this.handlelevelOneChange(value)}}
+         disabled={this.props.disable}
+        >
+          {levelOneCategory}
+        </Select>
+        {
+          levelTwoCategoryName.length > 0
+          ? (
+              <Select
+                defaultValue = {levelTwoCategoryId}
+                value={levelTwoCategoryId}
+               style={{ width: 120 }}
+               onChange={(value)=>{this.handlelevelTwoChange(value)}}
+               disabled={this.props.disable}
+              >
+               {levelTwoCategory}
+              </Select>
+            )
+          : null
+        }
 
-        </div>
+      </div>
        
     )
   }

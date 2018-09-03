@@ -13,7 +13,14 @@ class PicturesWall extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handlePreview = this.handlePreview.bind(this);
   }
-  
+  static getDerivedStateFromProps(props,state){
+    if (props.fileList.length >0 && state.fileList.length == 0) {
+      return {
+        fileList:props.fileList
+      };
+    }
+    return null;
+  }
   handleCancel(){
     this.setState({ previewVisible: false });
   }

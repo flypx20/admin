@@ -10,3 +10,7 @@ export const CATEGORY_ORDER = server+'/category/order';
 export const PRODUCT_UPLOADIMAGE = server+'/product/uploadImage';
 export const PRODUCT_UPLOADETAILIMAGE = server+'/product/uploadetailImage';
 export const PRODUCT_ADD = server+'/product';
+export const PRODUCT_ORDER = server+'/product/order';
+export const PRODUCT_STATUS = server+'/product/status';
+export const PRODUCT_EDIT = server+'/product/edit';
+export const PRODUCT_SEARCH = server+'/product/search';
