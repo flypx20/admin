@@ -4,6 +4,7 @@ import { reducer as homeReducer } from '../pages/home/store/';
 import { reducer as userReducer } from '../pages/user/store/';
 import { reducer as categoryReducer } from '../pages/category/store/';
 import { reducer as productReducer } from '../pages/product/store/';
+import { reducer as orderReducer } from '../pages/order/store/';
 
 
 export default  combineReducers({
@@ -11,5 +12,6 @@ export default  combineReducers({
 	homeState:homeReducer,
 	userState:userReducer,
 	categoryState:categoryReducer,
-	productState:productReducer
+	productState:productReducer,
+	orderState:orderReducer,	
 });

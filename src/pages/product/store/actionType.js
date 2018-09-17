@@ -4,6 +4,7 @@ export const PRODUCT_DETAIL = 'PRODUCT_detail';
 export const PRODUCT_SETCATEGORYID = 'PRODUCT_setCategoryId';
 export const PRODUCT_IMAGE = 'PRODUCT_image';
 export const PRODUCT_CATENULL = 'PRODUCT_catenull';
+export const PRODUCT_IMAGENULL = 'PRODUCT_imagenull';
 export const PRODUCTLIST_REQUEST = 'PRODUCT_listRequest';
 export const PRODUCTLIST_DONE = 'PRODUCT_listDone';
 export const PRODUCT_LISTSTATE = 'PRODUCT_listState';

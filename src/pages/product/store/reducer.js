@@ -19,7 +19,9 @@ const defaultItem = fromJS({
 	EditNum:'',
 	EditPrice:'',
 	EditIntro:'',
-	keyword:''
+	keyword:'',
+	imageValidateStatus:'',
+	imageHelp:''
 
 });
 export default (state=defaultItem,action)=>{
@@ -50,16 +52,28 @@ export default (state=defaultItem,action)=>{
 	}
 	if (action.type == types.PRODUCT_IMAGE) {
 		
-		return state.set('imageList',action.payload);
+		return state.merge({
+			'imageList':action.payload,
+			imageValidateStatus:'',
+			imageHelp:'',			
+		});
 	}
 
 	if (action.type == types.PRODUCT_CATENULL) {
 		
 		return state.merge({
+
 			validateStatus:'error',
 			help:'分类必须选择'
 		});
 	}
+	if (action.type == types.PRODUCT_IMAGENULL) {
+		
+		return state.merge({
+			imageValidateStatus:'error',
+			imageHelp:'请添加商品图片',
+		});
+	}	
 	if (action.type == types.PRODUCT_LISTSTATE) {
 		
 		return state.merge({

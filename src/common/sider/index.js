@@ -31,6 +31,9 @@ class mySider extends Component{
             <Menu.Item key="4">
               <NavLink to='/category'><Icon type="bars" />分类管理</NavLink>
             </Menu.Item>
+            <Menu.Item key="5">
+              <NavLink to='/order'><Icon type="calendar" />订单管理</NavLink>
+            </Menu.Item>            
         </Menu>
       </Sider>
       </div>

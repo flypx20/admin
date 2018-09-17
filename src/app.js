@@ -5,6 +5,7 @@ import User from './pages/user/';
 import ErrorPage from 'common/404-page/';
 import Category from './pages/category/';
 import Product from './pages/product/';
+import Order from './pages/order/';
 
 import { BrowserRouter as Router, Route, Link, Switch, Redirect } from 'react-router-dom';
 
@@ -45,6 +46,7 @@ class App extends Component{
 				    	<ProtectedRoute exact path = '/' component={ Home }/>
 						<ProtectedRoute  path = '/category' component={ Category }/>
 						<ProtectedRoute  path = '/product' component={ Product }/>
+						<ProtectedRoute  path = '/order' component={ Order }/>						
 				    	<ProtectedRoute path = '/user' component={ User }/>
 				      <LoginRoute path="/login" component={ Login }/>
 				      <Route component={ ErrorPage }/>

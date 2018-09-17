@@ -143,6 +143,8 @@ class ProductSave extends Component{
 				</FormItem>
 				<FormItem
 					label="商品图片"
+					validateStatus={this.props.imageValidateStatus}
+					help={this.props.imageHelp}					
 				>
 				<PicturesWall
 					action ={PRODUCT_UPLOADIMAGE}
@@ -194,7 +196,9 @@ const mapProductStateToProps = (state)=>{
 	EditNum:state.get('productState').get('EditNum'),
 	EditPrice:state.get('productState').get('EditPrice'),
 	EditIntro:state.get('productState').get('EditIntro'),
-	imageList:state.get('productState').get('imageList')
+	imageList:state.get('productState').get('imageList'),
+    imageValidateStatus:state.get('productState').get('imageValidateStatus'),
+    imageHelp:state.get('productState').get('imageHelp'),	
   }
 }
 const mapProductActionsToProps = (dispatch)=>{

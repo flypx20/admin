@@ -56,13 +56,22 @@ export const productListState = (value)=>{
 export const getSetProductAction = (err, values)=>{
 	return (dispatch,getState)=>{
     const state = getState().get('productState');
+    let hasErr = false;
     if (!state.get('categoryId')) {
       dispatch({
         type:User.PRODUCT_CATENULL
       });
-      return;
-
+      hasErr = true;
     }
+    if (!state.get('imageList')) {
+      dispatch({
+        type:User.PRODUCT_IMAGENULL
+      });
+      hasErr = true;
+    }  
+    if (hasErr) {
+      return;
+    } 
      if (err) {
         return;
       }
